@@ -1,0 +1,21 @@
+{
+  "name": "d01-ignite-fundamentos-nodejs",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandregyn/D01-ignite-fundamentos-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexandregyn/D01-ignite-fundamentos-nodejs/issues"
+  },
+  "homepage": "https://github.com/alexandregyn/D01-ignite-fundamentos-nodejs#readme"
+}
