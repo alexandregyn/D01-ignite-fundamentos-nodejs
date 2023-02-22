@@ -2,6 +2,7 @@
 import { randomUUID } from 'node:crypto';
 import { DataBase } from './database.js';
 import { buildRoutePath } from './utils/build-route-path.js';
+import { validatorFieldRequired } from './utils/validator-required-data.js';
 
 const dataBase = new DataBase();
 
@@ -17,22 +18,34 @@ export const routes = [
   {
     method: 'POST',
     path: buildRoutePath('/tasks'),
-    handler: (req, res) => {
-      const { title, description } = req.body;
-      const task = {
-        id: randomUUID(),
-        title,
-        description,
-        completed_at: null,
-        created_at: new Date(),
-        updated_at: new Date()
+    handler: async (req, res) => {
+
+      const mensagens = await validatorFieldRequired(req, [
+        'title',
+        'description'
+      ]);
+
+      if (!mensagens || mensagens.length === 0) {
+        const { title, description } = req.body;
+        const task = {
+          id: randomUUID(),
+          title,
+          description,
+          completed_at: null,
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+
+        dataBase.insert("tasks", task);
+
+        res
+          .writeHead(201)
+          .end(JSON.stringify(task))
+      } else {
+        res
+          .writeHead(400)
+          .end(JSON.stringify(mensagens))
       }
-  
-      dataBase.insert("tasks", task);
-  
-      res
-        .writeHead(201)
-        .end(JSON.stringify(task))
     }
   },
   {
@@ -50,7 +63,7 @@ export const routes = [
         description,
         updated_at: new Date()
       });
-  
+
       res.writeHead(204).end()
     }
   },
@@ -66,7 +79,7 @@ export const routes = [
         ...task,
         completed_at: new Date()
       });
-  
+
       res.writeHead(204).end()
     }
   },
